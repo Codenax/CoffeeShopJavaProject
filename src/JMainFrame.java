@@ -1,10 +1,10 @@
 
 import java.awt.print.PrinterException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.management.modelmbean.ModelMBean;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -40,7 +40,7 @@ public class JMainFrame extends javax.swing.JFrame {
     String gereenTea = "Gereen Tea";
     String whiteTea = "White Tea   ";
     String yellowTea = "Yellow Tea  ";
-
+    String totalS = "";
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -103,6 +103,7 @@ public class JMainFrame extends javax.swing.JFrame {
         jComboBoxDiscount = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jButtonRemoveItem = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -517,6 +518,7 @@ public class JMainFrame extends javax.swing.JFrame {
         jTextFieldCashReceived.setForeground(new java.awt.Color(0, 102, 153));
 
         jButtonClear.setBackground(new java.awt.Color(255, 0, 0));
+        jButtonClear.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButtonClear.setForeground(new java.awt.Color(255, 255, 255));
         jButtonClear.setText("CLEAR");
         jButtonClear.addActionListener(new java.awt.event.ActionListener() {
@@ -614,9 +616,16 @@ public class JMainFrame extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jTable.setRowHeight(20);
@@ -643,6 +652,16 @@ public class JMainFrame extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(0, 153, 153));
         jLabel6.setText("Sales Details");
 
+        jButtonRemoveItem.setBackground(new java.awt.Color(255, 0, 0));
+        jButtonRemoveItem.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonRemoveItem.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonRemoveItem.setText("Remove Item");
+        jButtonRemoveItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRemoveItemActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -652,33 +671,36 @@ public class JMainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBoxDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)
+                            .addComponent(jComboBoxDiscount, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
-                                .addGap(32, 32, 32))))
+                                .addGap(32, 32, 32))
+                            .addComponent(jButtonRemoveItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jLabel6)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
-            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonRemoveItem, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -718,12 +740,29 @@ public class JMainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    int total = 0;
+    int change = 0;
+    int receivedCash = 0;
+    int discount = 0;
+    String receivedCashS = "";
+    
+    String changeS;
+    
+    DateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
+    DateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy , hh.mm aa");
+    String dateTime = dateFormat2.format(new Date());
+        
+    String invoiceNo = "Jb007";
+    String cashirName = "Jb Jahangir";
+    int subTotal = 0;
+    int comfirmOrPaidOrder = 0;
+    String invoiceArea;
     private void jButtonMochaAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMochaAddActionPerformed
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
         int count = Integer.parseInt(jSpinnerMocha.getValue().toString());
         if (count == 0) {
             JOptionPane.showMessageDialog(this, "Please add quantity");
-        } else {
+        } else if(comfirmOrPaidOrder==0) {
             model.addRow(new Object[]{
                 a += 1,
                 mocha,
@@ -732,6 +771,8 @@ public class JMainFrame extends javax.swing.JFrame {
             jSpinnerMocha.setValue(0);
             jTextFieldMocha.setText(String.valueOf(""));
             
+        }else {
+        JOptionPane.showMessageDialog(this, "Please Paid Previous Bill First");
         }
     }//GEN-LAST:event_jButtonMochaAddActionPerformed
 
@@ -756,7 +797,9 @@ public class JMainFrame extends javax.swing.JFrame {
         int count = Integer.parseInt(jSpinnerCappuccino.getValue().toString());
         if (count == 0) {
             JOptionPane.showMessageDialog(this, "Please add quantity");
-        } else {
+        }
+       
+        else if(comfirmOrPaidOrder==0){
             model.addRow(new Object[]{
                 a += 1,
                 cappuccino,
@@ -764,6 +807,8 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextFieldCappuccino.getText(),});
             jSpinnerCappuccino.setValue(0);
             jTextFieldCappuccino.setText(String.valueOf(""));
+        } else {
+        JOptionPane.showMessageDialog(this, "Please Paid Previous Bill First");
         }
 
         // TODO add your handling code here:
@@ -839,7 +884,7 @@ public class JMainFrame extends javax.swing.JFrame {
         int count = Integer.parseInt(jSpinnerLatte.getValue().toString());
         if (count == 0) {
             JOptionPane.showMessageDialog(this, "Please add quantity");
-        } else {
+        } else if(comfirmOrPaidOrder==0) {
             model.addRow(new Object[]{
                 a += 1,
                 latte,
@@ -847,6 +892,8 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextFieldLatte.getText(),});
             jSpinnerLatte.setValue(0);
             jTextFieldLatte.setText(String.valueOf(""));
+        }else {
+        JOptionPane.showMessageDialog(this, "Please Paid Previous Bill First");
         }
     }//GEN-LAST:event_jButtonLatteAddActionPerformed
 
@@ -878,7 +925,7 @@ public class JMainFrame extends javax.swing.JFrame {
         int count = Integer.parseInt(jSpinnerGreenTea.getValue().toString());
         if (count == 0) {
             JOptionPane.showMessageDialog(this, "Please add quantity");
-        } else {
+        }else if(comfirmOrPaidOrder==0) {
             model.addRow(new Object[]{
                 a += 1,
                 gereenTea,
@@ -886,6 +933,8 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextFieldGereenTea.getText(),});
             jSpinnerGreenTea.setValue(0);
             jTextFieldGereenTea.setText(String.valueOf(""));
+        }else {
+        JOptionPane.showMessageDialog(this, "Please Paid Previous Bill First");
         }
     }//GEN-LAST:event_jButtonGreenTeaAddActionPerformed
 
@@ -916,7 +965,7 @@ public class JMainFrame extends javax.swing.JFrame {
         int count = Integer.parseInt(jSpinnerWhiteTea.getValue().toString());
         if (count == 0) {
             JOptionPane.showMessageDialog(this, "Please add quantity");
-        } else {
+        } else if(comfirmOrPaidOrder==0) {
             model.addRow(new Object[]{
                 a += 1,
                 whiteTea,
@@ -924,6 +973,8 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextFieldWhiteTea.getText(),});
             jSpinnerWhiteTea.setValue(0);
             jTextFieldWhiteTea.setText(String.valueOf(""));
+        }else {
+        JOptionPane.showMessageDialog(this, "Please Paid Previous Bill First");
         }
     }//GEN-LAST:event_jButtonWhiteTeaAddActionPerformed
 
@@ -954,7 +1005,7 @@ public class JMainFrame extends javax.swing.JFrame {
         int count = Integer.parseInt(jSpinnerYellowTea.getValue().toString());
         if (count == 0) {
             JOptionPane.showMessageDialog(this, "Please add quantity");
-        } else {
+        } else if(comfirmOrPaidOrder==0) {
             model.addRow(new Object[]{
                 (a += 1),
                 yellowTea,
@@ -962,27 +1013,23 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextFieldYellowTea.getText(),});
             jSpinnerYellowTea.setValue(0);
             jTextFieldYellowTea.setText(String.valueOf(""));
+        }else {
+        JOptionPane.showMessageDialog(this, "Please Paid Previous Bill First");
         }
     }//GEN-LAST:event_jButtonYellowTeaAddActionPerformed
 
-    int total = 0;
-    int change = 0;
-    int receivedCash = 0;
-    int discount = 0;
-    String receivedCashS = "";
-    String totalS;
-    String changeS;
-    LocalDateTime myDateObj = LocalDateTime.now();
-    DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-    String dateTime = myDateObj.format(myFormatObj);
+   
+    
 
-    String invoiceNo = "Jb007";
-    String cashirName = "Jb Jahangir";
-    int subTotal = 0;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         totalS = jTextFieldTotal.getText();
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
-        if (totalS.trim().isEmpty()) {
+        int selectedRow = jTable.getRowCount();
+        
+        if(selectedRow==0){
+            JOptionPane.showMessageDialog(this, "Please Add Item First");
+        }
+       else if (totalS.trim().isEmpty()) {
             discount = Integer.parseInt(jComboBoxDiscount.getSelectedItem().toString());
             for (int i = 0; i < jTable.getRowCount(); i++) {
                 subTotal = subTotal + Integer.parseInt(jTable.getValueAt(i, 3).toString());
@@ -1006,8 +1053,10 @@ public class JMainFrame extends javax.swing.JFrame {
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "Description" + "\t\t" + "Qty           Amount\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
           
+                int slNo=1;
             for (int i = 0; i < model.getRowCount(); i++) {
-                String itemSL = (String) model.getValueAt(i, 0).toString();
+                 slNo += i;
+                String itemSL = Integer.toString(slNo);
                 String itemName = (String) model.getValueAt(i, 1);
                 String itemQty = (String) model.getValueAt(i, 2).toString();
                 String amount = (String) model.getValueAt(i, 3);
@@ -1021,12 +1070,10 @@ public class JMainFrame extends javax.swing.JFrame {
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "_________________________________________\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\t             Thank You\n \t        Have a Naic Day!\n");
 
-            while (model.getRowCount()>0)
-            {
-                model.removeRow(0);
-            }
-            jComboBoxDiscount.setSelectedIndex(0);
             
+            jComboBoxDiscount.setSelectedIndex(0);
+            a = 0;
+            comfirmOrPaidOrder = 1;
         } else {
             JOptionPane.showMessageDialog(this, "Please Clear Previous Bill");
         }
@@ -1069,8 +1116,10 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "Description" + "\t\t" + "Qty           Amount\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
                 DefaultTableModel model = (DefaultTableModel) jTable.getModel();
+                int slNo=1;
                 for (int i = 0; i < model.getRowCount(); i++) {
-                    String itemSL = (String) model.getValueAt(i, 0).toString();
+                    slNo += i;
+                    String itemSL = Integer.toString(slNo);
                     String itemName = (String) model.getValueAt(i, 1);
                     String itemQty = (String) model.getValueAt(i, 2).toString();
                     String amount = (String) model.getValueAt(i, 3);
@@ -1084,12 +1133,24 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tChange\t\t: " + change + "\n\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "_________________________________________\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\t             Thank You\n \t        Have a Naic Day!\n");
+                
+                
+                
+                
+                
+                
+                while (model.getRowCount()>0)
+                {
+                    model.removeRow(0);
+                }
+                a = 0;
+                comfirmOrPaidOrder = 0;
             }
         }
     }//GEN-LAST:event_jButtonPaidActionPerformed
 
     private void jButtonPrintReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrintReceiptActionPerformed
-        String invoiceArea;
+        
         invoiceArea = jTextPaneInvoice.getText();
         try {
             if(invoiceArea.trim().isEmpty()){
@@ -1118,12 +1179,30 @@ public class JMainFrame extends javax.swing.JFrame {
         jTextFieldSubTotal.setText(String.valueOf(""));
         jTextFieldCashReceived.setText(String.valueOf(""));
         jTextPaneInvoice.setText(String.valueOf(""));
-        }
-        
-        
-        
-         
+        total = 0;
+        change = 0;
+        receivedCash = 0;
+        discount = 0;
+        subTotal = 0;
+       
+        }   
     }//GEN-LAST:event_jButtonClearActionPerformed
+
+    private void jButtonRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveItemActionPerformed
+      DefaultTableModel model = (DefaultTableModel) jTable.getModel();
+       int selectedRow = jTable.getSelectedRow();
+       
+       if(comfirmOrPaidOrder==1){
+       JOptionPane.showMessageDialog(this, "Please Paid The bill First");
+       }
+      else if(selectedRow >= 0){
+       model.removeRow(selectedRow);
+       }else{
+       JOptionPane.showMessageDialog(this, "Please Select an Item");
+       }
+       
+        
+    }//GEN-LAST:event_jButtonRemoveItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1173,6 +1252,7 @@ public class JMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButtonMochaAdd;
     private javax.swing.JButton jButtonPaid;
     private javax.swing.JButton jButtonPrintReceipt;
+    private javax.swing.JButton jButtonRemoveItem;
     private javax.swing.JButton jButtonWhiteTea;
     private javax.swing.JButton jButtonWhiteTeaAdd;
     private javax.swing.JButton jButtonYellowTea;
