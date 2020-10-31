@@ -731,6 +731,7 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextFieldMocha.getText(),});
             jSpinnerMocha.setValue(0);
             jTextFieldMocha.setText(String.valueOf(""));
+            
         }
     }//GEN-LAST:event_jButtonMochaAddActionPerformed
 
