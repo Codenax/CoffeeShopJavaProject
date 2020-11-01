@@ -1053,9 +1053,9 @@ public class JMainFrame extends javax.swing.JFrame {
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "Description" + "\t\t" + "Qty           Amount\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
           
-                int slNo=1;
+                int slNo=0;
             for (int i = 0; i < model.getRowCount(); i++) {
-                 slNo += i;
+                 slNo += 1;
                 String itemSL = Integer.toString(slNo);
                 String itemName = (String) model.getValueAt(i, 1);
                 String itemQty = (String) model.getValueAt(i, 2).toString();
@@ -1116,9 +1116,9 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "Description" + "\t\t" + "Qty           Amount\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
                 DefaultTableModel model = (DefaultTableModel) jTable.getModel();
-                int slNo=1;
+                int slNo=0;
                 for (int i = 0; i < model.getRowCount(); i++) {
-                    slNo += i;
+                    slNo += 1;
                     String itemSL = Integer.toString(slNo);
                     String itemName = (String) model.getValueAt(i, 1);
                     String itemQty = (String) model.getValueAt(i, 2).toString();
