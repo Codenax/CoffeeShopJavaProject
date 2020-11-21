@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -16,18 +11,16 @@ public class Paid extends ConfirmOrder{
     
     public void setReceivedCash(double givenReceivedCash){
     receivedCash=givenReceivedCash;
-    }
-    
+    }  
     public void setReceivedCash(String givenReceivedCash){
     receivedCash= Double.valueOf(givenReceivedCash);
     }
     
+    
     public double getReceivedCash(){
     return receivedCash;
     }
-    
-    public double getChange(){  
-        
+    public double getChange(){    
         change = receivedCash - getTotal();
         return change;
     }

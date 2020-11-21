@@ -6,11 +6,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 /**
  *
  * @author JB
@@ -23,16 +19,7 @@ public class JMainFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    
 
-   
-    String totalS = "";
-    String receivedCashS = "";
-    String changeS;
-    int comfirmOrPaidOrder = 0;
-    String invoiceArea;
-    
-    
     ///--------------Coffee item method section start--------///// 
       CoffeeItem coffeeItem = new CoffeeItem();
       int a=0;
@@ -535,6 +522,11 @@ public class JMainFrame extends javax.swing.JFrame {
 
         jTextFieldCashReceived.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jTextFieldCashReceived.setForeground(new java.awt.Color(0, 102, 153));
+        jTextFieldCashReceived.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldCashReceivedKeyTyped(evt);
+            }
+        });
 
         jButtonClear.setBackground(new java.awt.Color(255, 0, 0));
         jButtonClear.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -780,6 +772,8 @@ public class JMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonMochaAddActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        
+        
         jTextFieldCappuccino.setEditable(false);
         jTextFieldLatte.setEditable(false);
         jTextFieldMocha.setEditable(false);
@@ -1011,14 +1005,17 @@ public class JMainFrame extends javax.swing.JFrame {
    
     
   DecimalFormat df = new DecimalFormat("0.00");
-  int ida = 0;
+    int ida = 0;
+    String totalS = "";
+    String receivedCashS = "";
+    String changeS;
+    int comfirmOrPaidOrder = 0;
+    String invoiceArea;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ConfirmOrder confirmOrder = new ConfirmOrder();
-        
         totalS = jTextFieldTotal.getText();
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
         int selectedRow = jTable.getRowCount();
-        
         if(selectedRow==0){
             JOptionPane.showMessageDialog(this, "Please Add Item First");
         }
@@ -1027,13 +1024,12 @@ public class JMainFrame extends javax.swing.JFrame {
            confirmOrder.setInvoiceId(ida);
            confirmOrder.getInvoiceNo();
            confirmOrder.setCashirName("Jahangir");
-           
-           confirmOrder.setDiscount(Double.valueOf(jComboBoxDiscount.getSelectedItem().toString()));           
+           confirmOrder.setDiscount(Double.valueOf(jComboBoxDiscount.getSelectedItem().toString()));   
+           jTextFieldCashReceived.requestFocusInWindow();
             for (int i = 0; i < jTable.getRowCount(); i++) {
                 confirmOrder.setItemSubTotal(Double.valueOf(jTable.getValueAt(i, 3).toString()));
                 confirmOrder.setSubTotal();
-                confirmOrder.setTotal();  
-                
+                confirmOrder.setTotal();    
             }
 
             jTextFieldTotal.setText(String.valueOf(df.format(confirmOrder.getTotal())));
@@ -1049,11 +1045,10 @@ public class JMainFrame extends javax.swing.JFrame {
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Invoice No\t: " + confirmOrder.getInvoiceNo() + "\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Date\t: " + confirmOrder.getDateTime() + "\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Cashier\t: " + confirmOrder.getCashirName() + "\n\n");
-
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "Description" + "\t\t" + "Qty           Amount\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
           
-                int slNo=0;
+                 int slNo=0;
             for (int i = 0; i < model.getRowCount(); i++) {
                  slNo += 1;
                 String itemSL = Integer.toString(slNo);
@@ -1067,11 +1062,9 @@ public class JMainFrame extends javax.swing.JFrame {
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tDiscount\t\t: " + df.format(confirmOrder.getDiscount()) + "%\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tTotal\t\t: " + df.format(confirmOrder.getTotal()) + "\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tBill Unpaid\t\t"+ "\n\n");
-
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "_________________________________________\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\t             Thank You\n \t        Have a Naic Day!\n");
 
-            
             jComboBoxDiscount.setSelectedIndex(0);
             a=0;
             comfirmOrPaidOrder = 1;
@@ -1145,16 +1138,10 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tBill Paid\t\t" + "\n\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "_________________________________________\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\t             Thank You\n \t        Have a Naic Day!\n");
-                
-                
-                
-           
-                
                 while (model.getRowCount()>0)
                 {
                     model.removeRow(0);
                 }
-              
                 comfirmOrPaidOrder = 0;
             }
         }
@@ -1182,7 +1169,6 @@ public class JMainFrame extends javax.swing.JFrame {
         }
         else if(changeS.trim().isEmpty() ){
             JOptionPane.showMessageDialog(this, "Please Paid The Bill First");
-        
         }else{
         jTextFieldChange.setText(String.valueOf(""));
         jTextFieldDiscount.setText(String.valueOf(""));
@@ -1190,9 +1176,6 @@ public class JMainFrame extends javax.swing.JFrame {
         jTextFieldSubTotal.setText(String.valueOf(""));
         jTextFieldCashReceived.setText(String.valueOf(""));
         jTextPaneInvoice.setText(String.valueOf(""));
-        
-      
-       
         }   
     }//GEN-LAST:event_jButtonClearActionPerformed
 
@@ -1208,10 +1191,22 @@ public class JMainFrame extends javax.swing.JFrame {
        }else{
        JOptionPane.showMessageDialog(this, "Please Select an Item");
        }
-       
         
     }//GEN-LAST:event_jButtonRemoveItemActionPerformed
 
+    private void jTextFieldCashReceivedKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCashReceivedKeyTyped
+        char enter = evt.getKeyChar();
+        if(Character.isLetter(enter)&& !evt.isAltDown()){
+            evt.consume();
+        }  
+        
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldCashReceivedKeyTyped
+
+    
+    
+    
     /**
      * @param args the command line arguments
      */

@@ -3,12 +3,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author JB
@@ -22,9 +16,7 @@ public class ConfirmOrder {
     private double subTotal;
     private double total;
     private double itemSubTotal;
-
-    
-    
+      
     public void setInvoiceId(int givenInvoiceId){
     invoiceId = givenInvoiceId;
     }
@@ -47,17 +39,17 @@ public class ConfirmOrder {
       return dateTime;
     }
    
-    
-    
+       
     
     
     public void setDiscount(double givenDiscount){
        discount = givenDiscount;
     }
-   
      public void setDiscount(String givenDiscount){
        discount = Double.valueOf(givenDiscount);
     }
+     
+     
     public void setItemSubTotal(double givenItemSubTotal){
     itemSubTotal =givenItemSubTotal;
     }
@@ -66,13 +58,13 @@ public class ConfirmOrder {
     itemSubTotal =Double.valueOf(givenItemSubTotal) ;
     }
     
+    
     public void setSubTotal(){
     subTotal = subTotal+itemSubTotal;
     }
     public void setTotal(){
      total = getSubTotal() - ((getSubTotal() * getDiscount()) / 100);
     }
-    
     
     
  
