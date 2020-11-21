@@ -1,9 +1,6 @@
 
 import java.awt.print.PrinterException;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,27 +24,18 @@ public class JMainFrame extends javax.swing.JFrame {
     }
 
     
-    int a = 0;
+
    
     String totalS = "";
-    double total = 0;
-    double change = 0;
-    double receivedCash = 0;
-    double discount = 0;
     String receivedCashS = "";
     String changeS;
-    DateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
-    DateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy , hh.mm aa");
-    String dateTime = dateFormat2.format(new Date());    
-    String invoiceNo = "Jb007";
-    String cashirName = "Jb Jahangir";
-    double subTotal = 0;
     int comfirmOrPaidOrder = 0;
     String invoiceArea;
     
     
     ///--------------Coffee item method section start--------///// 
       CoffeeItem coffeeItem = new CoffeeItem();
+      int a=0;
       public void addItemInRowCoffee(){
       DefaultTableModel model = (DefaultTableModel) jTable.getModel();
             model.addRow(new Object[]{
@@ -1022,8 +1010,11 @@ public class JMainFrame extends javax.swing.JFrame {
 
    
     
-
+  DecimalFormat df = new DecimalFormat("0.00");
+  int ida = 0;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ConfirmOrder confirmOrder = new ConfirmOrder();
+        
         totalS = jTextFieldTotal.getText();
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
         int selectedRow = jTable.getRowCount();
@@ -1032,15 +1023,22 @@ public class JMainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Add Item First");
         }
        else if (totalS.trim().isEmpty()) {
-            discount = Double.valueOf(jComboBoxDiscount.getSelectedItem().toString());
+           ida=ida+1;
+           confirmOrder.setInvoiceId(ida);
+           confirmOrder.getInvoiceNo();
+           confirmOrder.setCashirName("Jahangir");
+           
+           confirmOrder.setDiscount(Double.valueOf(jComboBoxDiscount.getSelectedItem().toString()));           
             for (int i = 0; i < jTable.getRowCount(); i++) {
-                subTotal = subTotal + Double.valueOf(jTable.getValueAt(i, 3).toString());
-                total = subTotal - ((subTotal * discount) / 100);
+                confirmOrder.setItemSubTotal(Double.valueOf(jTable.getValueAt(i, 3).toString()));
+                confirmOrder.setSubTotal();
+                confirmOrder.setTotal();  
+                
             }
 
-            jTextFieldTotal.setText(String.valueOf(total));
-            jTextFieldSubTotal.setText(String.valueOf(subTotal));
-            jTextFieldDiscount.setText(String.valueOf(discount + "%"));
+            jTextFieldTotal.setText(String.valueOf(df.format(confirmOrder.getTotal())));
+            jTextFieldSubTotal.setText(String.valueOf(df.format(confirmOrder.getSubTotal())));
+            jTextFieldDiscount.setText(String.valueOf(df.format(confirmOrder.getDiscount())));
 
             /////-------------------print invoice----------------////
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "**********************************************************\n");
@@ -1048,9 +1046,9 @@ public class JMainFrame extends javax.swing.JFrame {
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "**********************************************************\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\t            INVOICE\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
-            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Invoice No\t: " + invoiceNo + "\n");
-            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Date\t: " + dateTime + "\n");
-            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Cashier\t: " + cashirName + "\n\n");
+            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Invoice No\t: " + confirmOrder.getInvoiceNo() + "\n");
+            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Date\t: " + confirmOrder.getDateTime() + "\n");
+            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Cashier\t: " + confirmOrder.getCashirName() + "\n\n");
 
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "Description" + "\t\t" + "Qty           Amount\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
@@ -1065,24 +1063,26 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + itemSL + " : " + itemName + "\t" + itemQty + "\t" + amount + "\n");
             }
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
-            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tSub Total\t\t: " + subTotal + "\n");
-            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tDiscount\t\t: " + discount + "%\n");
-            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tTotal\t\t: " + total + "\n\n");
+            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tSub Total\t\t: " + df.format(confirmOrder.getSubTotal()) + "\n");
+            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tDiscount\t\t: " + df.format(confirmOrder.getDiscount()) + "%\n");
+            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tTotal\t\t: " + df.format(confirmOrder.getTotal()) + "\n");
+            jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tBill Unpaid\t\t"+ "\n\n");
 
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "_________________________________________\n");
             jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\t             Thank You\n \t        Have a Naic Day!\n");
 
             
             jComboBoxDiscount.setSelectedIndex(0);
-            a = 0;
+            a=0;
             comfirmOrPaidOrder = 1;
         } else {
             JOptionPane.showMessageDialog(this, "Please Clear Previous Bill");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
     private void jButtonPaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPaidActionPerformed
-        DecimalFormat df = new DecimalFormat("0.00");
+        Paid paid = new Paid();
+        
         receivedCashS = jTextFieldCashReceived.getText();
         changeS = jTextFieldChange.getText();
         totalS = jTextFieldTotal.getText();
@@ -1096,13 +1096,23 @@ public class JMainFrame extends javax.swing.JFrame {
        else if (receivedCashS.trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Input Received Amount");
         } else {
-            receivedCash = Integer.parseInt(receivedCashS);
+            Double receivedCash = Double.valueOf(receivedCashS);
+            Double total=Double.valueOf(totalS);
             if (receivedCash < total) {
                 JOptionPane.showMessageDialog(this, "Received amount not enough. Please input enough amount");
             } else {
+                
+                paid.setInvoiceId(ida);
+                paid.getInvoiceNo();
+                paid.setCashirName("Jahangir");
+                paid.setItemSubTotal(jTextFieldSubTotal.getText());
+                paid.setSubTotal();
+                paid.setTotal();
+                paid.setDiscount(jTextFieldDiscount.getText());
+                paid.setReceivedCash(jTextFieldCashReceived.getText());
                 jTextPaneInvoice.setText("");
-                change = receivedCash - total;
-                jTextFieldChange.setText(String.valueOf(df.format(change)));
+               // paid.getChange();
+                jTextFieldChange.setText(String.valueOf(df.format(paid.getChange())));
 
                 /////-------------------print invoice----------------////
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "**********************************************************\n");
@@ -1110,9 +1120,9 @@ public class JMainFrame extends javax.swing.JFrame {
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "**********************************************************\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\t            INVOICE\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
-                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Invoice No\t: " + invoiceNo + "\n");
-                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Date\t: " + dateTime + "\n");
-                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Cashier\t: " + cashirName + "\n\n");
+                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Invoice No\t: " + paid.getInvoiceNo() + "\n");
+                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Date\t: " + paid.getDateTime() + "\n");
+                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + " Cashier\t: " + paid.getCashirName() + "\n\n");
 
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "Description" + "\t\t" + "Qty           Amount\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
@@ -1127,11 +1137,12 @@ public class JMainFrame extends javax.swing.JFrame {
                     jTextPaneInvoice.setText(jTextPaneInvoice.getText() + itemSL + " : " + itemName + "\t" + itemQty + "\t" + amount + "\n");
                 }
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "---------------------------------------------------------------------\n");
-                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tSub Total\t\t: " + subTotal + "\n");
-                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tDiscount\t\t: " + discount + "%\n");
-                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tTotal\t\t: " + total + "\n");
-                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tCash Recevie\t: " + receivedCash + "\n");
-                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tChange\t\t: " + df.format(change)+ "\n\n");
+                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tSub Total\t\t: " + df.format(paid.getSubTotal()) + "\n");
+                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tDiscount\t\t: " + df.format(paid.getDiscount()) + "%\n");
+                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tTotal\t\t: " + df.format(paid.getTotal()) + "\n");
+                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tCash Recevie\t: " + df.format(paid.getReceivedCash()) + "\n");
+                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tChange\t\t: " + df.format(paid.getChange())+ "\n");
+                jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\tBill Paid\t\t" + "\n\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "_________________________________________\n");
                 jTextPaneInvoice.setText(jTextPaneInvoice.getText() + "\t             Thank You\n \t        Have a Naic Day!\n");
                 
@@ -1143,7 +1154,7 @@ public class JMainFrame extends javax.swing.JFrame {
                 {
                     model.removeRow(0);
                 }
-                a = 0;
+              
                 comfirmOrPaidOrder = 0;
             }
         }
@@ -1179,11 +1190,8 @@ public class JMainFrame extends javax.swing.JFrame {
         jTextFieldSubTotal.setText(String.valueOf(""));
         jTextFieldCashReceived.setText(String.valueOf(""));
         jTextPaneInvoice.setText(String.valueOf(""));
-        total = 0;
-        change = 0;
-        receivedCash = 0;
-        discount = 0;
-        subTotal = 0;
+        
+      
        
         }   
     }//GEN-LAST:event_jButtonClearActionPerformed

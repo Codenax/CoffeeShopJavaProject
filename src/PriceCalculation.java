@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
  *
  * @author JB
  */
-public class PriceCalculation {
+abstract class PriceCalculation {
     private int quantity;
     private double itemPrice;
     private double totalPrice;
